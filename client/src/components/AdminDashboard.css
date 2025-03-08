@@ -1,0 +1,100 @@
+/* src/components/AdminDashboard.css */
+.dashboard-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #e9ecef;
+  }
+  
+  .dashboard-box {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .dashboard-header h2 {
+    margin: 0;
+  }
+  
+  .btn.btn-secondary {
+    background-color: #6c757d;
+    padding: 8px 16px;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn.btn-secondary:hover {
+    background-color: #5a6268;
+  }
+  
+  .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .complaints-table {
+    overflow-x: auto;
+  }
+  
+  .complaints-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .complaints-table th,
+  .complaints-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .complaints-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .small-btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+  }
+  
+  .resolve-btn {
+    background-color: #28a745;
+  }
+  
+  .pending-btn {
+    background-color: #ffc107;
+  }
+  
+  .small-btn:hover {
+    opacity: 0.8;
+  }
+  
+  .complaint-image {
+    max-width: 100px;
+    max-height: 100px;
+    display: block;
+  }
+  
