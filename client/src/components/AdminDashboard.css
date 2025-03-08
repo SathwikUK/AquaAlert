@@ -78,6 +78,7 @@
     border-radius: 4px;
     cursor: pointer;
     color: #fff;
+    margin-right: 5px;
   }
   
   .resolve-btn {
@@ -86,6 +87,10 @@
   
   .pending-btn {
     background-color: #ffc107;
+  }
+  
+  .reply-btn {
+    background-color: #17a2b8;
   }
   
   .small-btn:hover {

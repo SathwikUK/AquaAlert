@@ -1,6 +1,7 @@
 // src/components/UserDashboard.jsx
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import io from 'socket.io-client';
 import { AuthContext } from '../context/AuthContext';
 import './UserDashboard.css';
 
@@ -13,6 +14,7 @@ const UserDashboard = () => {
   });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [userComplaints, setUserComplaints] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,11 +43,41 @@ const UserDashboard = () => {
       setMessage(res.data.message);
       setError('');
       setComplaintData({ location: '', description: '', image: null });
+      fetchUserComplaints();
     } catch (err) {
       setError(err.response?.data.message || 'Error submitting complaint');
       setMessage('');
     }
   };
+
+  const fetchUserComplaints = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/complaints/my', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setUserComplaints(res.data);
+    } catch (err) {
+      console.error("Error fetching user complaints:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserComplaints();
+
+    // Set up Socket.IO for real-time reply updates.
+    const socket = io('http://localhost:5000');
+    socket.on('complaintReply', (updatedComplaint) => {
+      // Only update if the complaint belongs to this user.
+      if (updatedComplaint.user === user._id) {
+        setUserComplaints((prev) =>
+          prev.map((c) => (c._id === updatedComplaint._id ? updatedComplaint : c))
+        );
+      }
+    });
+    return () => {
+      socket.disconnect();
+    };
+  }, [token, user._id]);
 
   return (
     <div className="dashboard-container">
@@ -93,6 +125,35 @@ const UserDashboard = () => {
             </div>
             <button type="submit" className="btn">Submit Complaint</button>
           </form>
+        </div>
+        <div className="user-complaints">
+          <h3>Your Complaints</h3>
+          {userComplaints.length === 0 ? (
+            <p>No complaints submitted yet.</p>
+          ) : (
+            <table className="complaints-table">
+              <thead>
+                <tr>
+                  <th>Location</th>
+                  <th>Description</th>
+                  <th>Status</th>
+                  <th>Reply</th>
+                  <th>Date Submitted</th>
+                </tr>
+              </thead>
+              <tbody>
+                {userComplaints.map((complaint) => (
+                  <tr key={complaint._id}>
+                    <td>{complaint.location}</td>
+                    <td>{complaint.description}</td>
+                    <td>{complaint.status}</td>
+                    <td>{complaint.reply && complaint.reply.trim() !== "" ? complaint.reply : "No Reply"}</td>
+                    <td>{new Date(complaint.createdAt).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>

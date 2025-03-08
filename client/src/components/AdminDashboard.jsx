@@ -13,7 +13,7 @@ const AdminDashboard = () => {
   const [complaints, setComplaints] = useState([]);
   const [error, setError] = useState('');
 
-  // Fetch all complaints from the API
+  // Fetch complaints for admin
   const fetchComplaints = async () => {
     try {
       const res = await axios.get('http://localhost:5000/api/complaints', {
@@ -28,17 +28,23 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchComplaints();
 
-    // Listen for new complaint notifications
     socket.on('newComplaint', (newComplaint) => {
       setComplaints((prev) => [newComplaint, ...prev]);
     });
 
+    // Listen for reply updates
+    socket.on('complaintReply', (updatedComplaint) => {
+      setComplaints((prev) =>
+        prev.map((c) => (c._id === updatedComplaint._id ? updatedComplaint : c))
+      );
+    });
+
     return () => {
       socket.off('newComplaint');
+      socket.off('complaintReply');
     };
   }, [token]);
 
-  // Update complaint status
   const updateStatus = async (id, status) => {
     try {
       const res = await axios.put(
@@ -54,9 +60,31 @@ const AdminDashboard = () => {
     }
   };
 
-  // Render image from stored binary data
+  const handleReply = async (complaintId) => {
+    const replyMsg = window.prompt("Enter your reply message:");
+    if (!replyMsg) return;
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/api/complaints/${complaintId}/reply`,
+        { reply: replyMsg },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setComplaints((prev) =>
+        prev.map((c) => (c._id === complaintId ? res.data.complaint : c))
+      );
+    } catch (err) {
+      setError(err.response?.data.message || 'Error sending reply');
+    }
+  };
+
+  // Render image using base64 conversion
   const renderImage = (complaint) => {
-    if (complaint.image && complaint.image.data && complaint.image.data.data && complaint.image.data.data.length > 0) {
+    if (
+      complaint.image &&
+      complaint.image.data &&
+      complaint.image.data.data &&
+      complaint.image.data.data.length > 0
+    ) {
       const base64String = btoa(
         new Uint8Array(complaint.image.data.data).reduce(
           (data, byte) => data + String.fromCharCode(byte),
@@ -85,6 +113,7 @@ const AdminDashboard = () => {
                 <th>Location</th>
                 <th>Description</th>
                 <th>Status</th>
+                <th>Reply</th>
                 <th>Date Submitted</th>
                 <th>Actions</th>
               </tr>
@@ -99,31 +128,25 @@ const AdminDashboard = () => {
                       className="complaint-image"
                     />
                   </td>
-                  <td>
-                    {complaint.user && complaint.user.name 
-                      ? complaint.user.name 
-                      : "No Name"}
-                  </td>
+                  <td>{complaint.user && complaint.user.name ? complaint.user.name : "No Name"}</td>
                   <td>{complaint.location}</td>
                   <td>{complaint.description}</td>
                   <td>{complaint.status}</td>
+                  <td>{complaint.reply ? complaint.reply : "No Reply"}</td>
                   <td>{new Date(complaint.createdAt).toLocaleString()}</td>
                   <td>
                     {complaint.status === 'Pending' ? (
-                      <button
-                        onClick={() => updateStatus(complaint._id, 'Resolved')}
-                        className="small-btn resolve-btn"
-                      >
+                      <button onClick={() => updateStatus(complaint._id, 'Resolved')} className="small-btn resolve-btn">
                         Mark as Resolved
                       </button>
                     ) : (
-                      <button
-                        onClick={() => updateStatus(complaint._id, 'Pending')}
-                        className="small-btn pending-btn"
-                      >
+                      <button onClick={() => updateStatus(complaint._id, 'Pending')} className="small-btn pending-btn">
                         Mark as Pending
                       </button>
                     )}
+                    <button onClick={() => handleReply(complaint._id)} className="small-btn reply-btn">
+                      Reply
+                    </button>
                   </td>
                 </tr>
               ))}
