@@ -11,7 +11,7 @@ require('dotenv').config();
 const app = express();
 const server = http.createServer(app);
 
-// Setup Socket.IO for real‑time notifications
+// Setup Socket.IO
 const io = socketIo(server, {
   cors: { origin: '*' }
 });
@@ -41,7 +41,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// API Routes
+// Routes
 app.use('/api', authRoutes);
 app.use('/api', complaintRoutes);
 

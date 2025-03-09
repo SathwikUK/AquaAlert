@@ -5,36 +5,33 @@ const Complaint = require('../models/Complaint');
 const { auth, adminAuth } = require('../middleware/auth');
 const multer = require('multer');
 
-// Use memory storage so files are available as Buffer
+// Use memory storage for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// POST /api/complaints - Submit a new complaint (Villager only)
+// POST /api/complaints
 router.post('/complaints', auth, upload.single('image'), async (req, res) => {
   try {
     const { location, description } = req.body;
-    if (!location || !description)
+    if (!location || !description) {
       return res.status(400).json({ message: 'Location and description are required' });
-    
+    }
     const complaintData = {
       user: req.user.id,
       location,
-      description,
+      description
     };
-    
     if (req.file) {
       complaintData.image = {
         data: req.file.buffer,
         contentType: req.file.mimetype
       };
     }
-    
     const complaint = new Complaint(complaintData);
     await complaint.save();
 
-    // Emit real‑time notification to admins
+    // Notify admins in real-time
     req.io.emit('newComplaint', complaint);
-
     res.status(201).json({ message: 'Complaint submitted successfully', complaint });
   } catch (err) {
     console.error(err);
@@ -42,7 +39,18 @@ router.post('/complaints', auth, upload.single('image'), async (req, res) => {
   }
 });
 
-// GET /api/complaints - Retrieve all complaints (Admin only)
+// GET /api/complaints/my - Retrieve user's complaints
+router.get('/complaints/my', auth, async (req, res) => {
+  try {
+    const complaints = await Complaint.find({ user: req.user.id }).sort({ createdAt: -1 });
+    res.json(complaints);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// GET /api/complaints (admin only)
 router.get('/complaints', adminAuth, async (req, res) => {
   try {
     const complaints = await Complaint.find().populate('user', 'name email');
@@ -53,11 +61,11 @@ router.get('/complaints', adminAuth, async (req, res) => {
   }
 });
 
-// PUT /api/complaints/:id/status - Update complaint status (Admin only)
+// PUT /api/complaints/:id/status (admin only)
 router.put('/complaints/:id/status', adminAuth, async (req, res) => {
   try {
     const { status } = req.body;
-    if (!status || !['Pending', 'Resolved'].includes(status)) {
+    if (!['Pending', 'Resolved'].includes(status)) {
       return res.status(400).json({ message: 'Invalid status value' });
     }
     const complaint = await Complaint.findByIdAndUpdate(
@@ -65,8 +73,7 @@ router.put('/complaints/:id/status', adminAuth, async (req, res) => {
       { status },
       { new: true }
     );
-    if (!complaint)
-      return res.status(404).json({ message: 'Complaint not found' });
+    if (!complaint) return res.status(404).json({ message: 'Complaint not found' });
     res.json({ message: 'Complaint status updated', complaint });
   } catch (err) {
     console.error(err);
@@ -74,7 +81,7 @@ router.put('/complaints/:id/status', adminAuth, async (req, res) => {
   }
 });
 
-// PUT /api/complaints/:id/reply - Admin sends a reply to a complaint
+// PUT /api/complaints/:id/reply (admin only)
 router.put('/complaints/:id/reply', adminAuth, async (req, res) => {
   try {
     const { reply } = req.body;
@@ -87,7 +94,7 @@ router.put('/complaints/:id/reply', adminAuth, async (req, res) => {
       { new: true }
     );
     if (!complaint) return res.status(404).json({ message: 'Complaint not found' });
-    // Emit socket event so that user can see the reply in real time
+    // Notify user in real-time
     req.io.emit('complaintReply', complaint);
     res.json({ message: 'Reply sent', complaint });
   } catch (err) {
@@ -96,18 +103,7 @@ router.put('/complaints/:id/reply', adminAuth, async (req, res) => {
   }
 });
 
-// GET /api/complaints/my - Retrieve complaints for logged in user (Villager)
-router.get('/complaints/my', auth, async (req, res) => {
-  try {
-    const complaints = await Complaint.find({ user: req.user.id });
-    res.json(complaints);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// GET /api/complaints/:id/image - Retrieve a complaint's image
+// GET /api/complaints/:id/image - Retrieve complaint image
 router.get('/complaints/:id/image', async (req, res) => {
   try {
     const complaint = await Complaint.findById(req.params.id);

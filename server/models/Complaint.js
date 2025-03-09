@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const complaintSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'VillageUser', required: true },
     location: { type: String, required: true },
     description: { type: String, required: true },
     image: {
@@ -11,7 +11,7 @@ const complaintSchema = new mongoose.Schema(
       contentType: String
     },
     status: { type: String, enum: ['Pending', 'Resolved'], default: 'Pending' },
-    reply: { type: String, default: "" }  // New field for admin reply
+    reply: { type: String, default: "" }
   },
   { timestamps: true }
 );

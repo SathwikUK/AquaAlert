@@ -1,65 +1,237 @@
 /* src/components/Login.css */
+
+/* 
+  Google Font for a sleek, professional look.
+  (Remove if you prefer system fonts)
+*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+
+
+/* Full-page container with a multi-stop animated gradient */
 .login-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Animate between 3 gradient stops for a fluid water effect */
+  background-color: black;
+  animation: waterWave 8s ease-in-out infinite alternate;
+  font-family: var(--font-family);
+}
+
+@keyframes waterWave {
+  0% {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  }
+  50% {
+    background: linear-gradient(135deg, var(--secondary-color), var(--mid-color));
+  }
+  100% {
+    background: linear-gradient(135deg, var(--mid-color), var(--primary-color));
+  }
+}
+
+/* Back button in the top-left corner; no navigation action */
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 0.6em 1.2em;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  backdrop-filter: blur(3px);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.back-button:hover {
+  background-color: rgba(13, 212, 13, 0.4);
+  transform: scale(1.03);
+}
+
+/* 
+  Wrapper holds two columns: left image & right form.
+  A translucent background is applied to the entire wrapper for glassmorphism.
+*/
+.login-wrapper {
+  display: flex;
+  width: 90%;
+  max-width: 1100px;
+  height: 80%;
+  background-color: rgba(9, 9, 9, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* Left side with a water-themed image */
+.login-left {
+  flex: 1;
+  overflow: hidden;
+}
+.left-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.left-image:hover {
+  transform: scale(1.08);
+}
+
+/* Right side containing the login form */
+.login-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background-color: #000;
+}
+.login-box.glass-effect{
+  background-color: #a5ddf1;
+}
+
+/* Glass effect box for the form with deeper blur */
+.glass-effect {
+  background-color: rgb(131, 213, 213);
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* The actual login box with the form inside */
+.login-box {
+  width: 100%;
+  max-width: 420px;
+  color: #52c3ec;
+  padding: 30px;
+  border-radius: 12px;
+  background-color: #54c1d2;
+}
+
+/* Title styling */
+.login-box h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  color:rgb(3, 70, 68);
+}
+
+/* Form group & input styling */
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #f0f0f0; /* Light text for better contrast on the glass background */
+}
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #cce7ff;
+  border-radius: 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: var(--font-family);
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #000;
+}
+.form-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 5px rgba(60, 140, 231, 0.3);
+}
+.form-input::placeholder {
+  color: #999;
+}
+
+/* Button with neon glow & ripple effect */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background-color: var(--primary-color);
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: var(--font-family);
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+/* Neon glow on hover */
+.btn:hover {
+  background-color: #357ed4;
+  box-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+  transform: scale(1.03);
+}
+
+/* Ripple effect on click */
+.ripple-btn:active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  animation: ripple 0.6s ease-out;
+}
+@keyframes ripple {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Error message styling */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Link styling */
+.link {
+  color: var(--primary-color);
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+.link:hover {
+  text-decoration: underline;
+  color: var(--secondary-color);
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .login-wrapper {
+    flex-direction: column;
+    height: auto;
+    margin: 20px 0;
+  }
+  .login-left {
+    width: 100%;
+    height: 220px;
+  }
+  .login-right {
+    width: 100%;
     padding: 20px;
   }
-  
-  .login-box {
-    background-color: #fff;
-    padding: 20px 30px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .login-box h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-input {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .btn {
-    display: block;
-    width: 100%;
-    padding: 10px 0;
-    background-color: #007BFF;
-    border: none;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    text-align: center;
-  }
-  
-  .link {
-    color: #007BFF;
-  }
-  .link:hover {
-    text-decoration: underline;
-  }
-  
+}

@@ -1,0 +1,231 @@
+/* Each section occupies full screen */
+.hero-section,
+.about-section,
+.gallery-section,
+.contact-section {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* HERO SECTION with background image */
+.hero-section {
+  background-image: url('../assets/csp2.jpg');  /* Replace with your background image path */
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+/* Optional overlay to darken the bg for text readability */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);  /* Adjust opacity as needed */
+  z-index: 1;
+}
+
+/* Hero content on top of overlay */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Left side: Text & button */
+.hero-text {
+  flex: 1;
+  margin-right: 2rem;
+}
+.hero-text h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+.hero-text h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--text-color-dark);
+}
+
+/* "Get Started" button styling */
+.hero-button {
+  background-color: var(--secondary-color);
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.hero-button:hover {
+  background-color: var(--accent-color);
+}
+
+/* Right side: Image */
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.hero-image img {
+  max-width: 80%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* About Section */
+
+.about-container {
+    
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.about-droplet {
+  cursor: pointer;
+}
+.droplet-image {
+  width: 300px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+.about-content {
+  background: rgba(39, 185, 238, 0.2);
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 600px;
+  margin-bottom: 40px;
+}
+
+/* UPDATED Gallery Section */
+.gallery-section {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url('gallery-bg.jpg'); /* Replace with your gallery background image */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    padding: 2rem 0;
+  }
+  
+  .gallery-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Dark overlay for legibility */
+    z-index: 1;
+  }
+  
+  .gallery-section h2 {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 2rem;
+    color: #fff;
+  }
+  
+  .gallery-carousel-wrapper {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 600px;
+    height: 900px;
+   
+  }
+/* Contact Section */
+/* CONTACT SECTION */
+.contact-section {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background:black;
+  }
+  
+  .contact-container {
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+    gap: 2rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .contact-details {
+    flex: 1;
+    color: var(--text-color-dark);
+  }
+  
+  .contact-details h2 {
+    margin-bottom: 2rem;
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 5px;
+  }
+  .contact-form textarea{
+    min-height: 150px; /* fixed height */
+    max-height: 150px;
+  }
+  
+  .contact-form button {
+    padding: 0.75rem;
+    border: none;
+    border-radius: 5px;
+    background: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .contact-form button:hover {
+    background: var(--secondary-color);
+  }
+  
+  .contact-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 3rem;
+  }
+  
+  .contact-image img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 500px;
+    object-fit: cover;
+  }
+  

@@ -1,122 +1,356 @@
 /* src/components/UserDashboard.css */
-.dashboard-container {
-    display: flex;
+
+/* Overall Page */
+.user-dashboard-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #b3e5fc, #e0f7ff);
+  font-family: 'Poppins', sans-serif;
+  padding-top: 70px; /* for fixed navbar */
+  padding-bottom: 80px; /* for floating button */
+}
+
+/* Navbar */
+.dashboard-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: red;
+  backdrop-filter: blur(10px);
+  padding: 0.8rem 1.5rem;
+  border-bottom: 2px solid #90caf9;
+  position: fixed;
+  top: 0;
+  color: #43a047;
+  width: 100%;
+  z-index: 1100;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.welcome-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0277bd;
+}
+.navbar-right {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.profile-icon {
+  width: 45px;
+  height: 45px;
+  background: #a3d1ec;
+  color: #d11d98;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.profile-icon:hover {
+  transform: scale(1.1);
+}
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #43a047;
+  padding: 0;
+  margin: 0;
+}
+
+/* Profile Dropdown */
+.profile-dropdown {
+  position: absolute;
+  top: 55px;
+  right: 0;
+  background: #fff;
+  border: 1px solid #90caf9;
+  border-radius: 8px;
+  width: 280px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 1200;
+}
+.profile-info p {
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+.profile-info button {
+  background: #0277bd;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+.profile-info button:hover {
+  background: #015f92;
+}
+.profile-edit input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.profile-edit button {
+  width: 100%;
+  padding: 0.5rem;
+  background: #0277bd;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.profile-edit button:hover {
+  background: #015f92;
+}
+
+/* Search Bar */
+.search-bar {
+  margin: 1rem auto;
+  text-align: center;
+}
+.search-bar input {
+  width: 60%;
+  max-width: 500px;
+  padding: 0.8rem;
+  border: 2px solid #0277bd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+  transition: border-color 0.3s ease;
+}
+.search-bar input:focus {
+  border-color: #015f92;
+  outline: none;
+}
+
+/* "Your Complaints" Title */
+.complaints-title {
+  text-align: center;
+  color: #0277bd;
+  font-size: 1.5rem;
+  margin: 1rem 0;
+}
+
+/* Spinner for loading */
+.spinner-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+.spinner {
+  margin: 0 auto 1rem;
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ccc;
+  border-top: 4px solid #0277bd;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Cards Container */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 1rem 2rem;
+}
+.no-complaints-text {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  color: #0277bd;
+}
+
+/* Complaint Card as Flex Row */
+.complaint-card {
+  display: flex;
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  width: calc(33.333% - 20px);
+  min-width: 250px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: 2px solid;
+}
+.card-no-reply {
+  border-color: #e53935;
+}
+.card-replied {
+  border-color: #43a047;
+}
+.complaint-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 16px rgba(0,0,0,0.15);
+}
+
+/* Card Layout: Left image and Right info */
+.card-image {
+  width: 100px;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+.complaint-card-img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.card-info {
+  flex: 1;
+}
+.complaint-card h3 {
+  margin-top: 0;
+  color: #0277bd;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+.complaint-card p {
+  margin: 0.4rem 0;
+  color: #333;
+}
+.reply-green {
+  color: #43a047;
+  font-weight: 600;
+}
+.reply-red {
+  color: #e53935;
+  font-weight: 600;
+}
+.complaint-date {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Floating + Button */
+.floating-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #0277bd;
+  color: #fff;
+  width: 60px;
+  height: 60px;
+  font-size: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+  z-index: 1200;
+}
+.floating-button:hover {
+  transform: scale(1.1);
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Modal for new complaint */
+.modal-content {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #0277bd;
+}
+.modal-content .form-group {
+  margin-bottom: 1rem;
+}
+.modal-content .form-group label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+  color: #444;
+}
+.modal-content .form-group input,
+.modal-content .form-group textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.modal-content button {
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
+}
+.btn.btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+.btn.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Modal for image display */
+.image-modal-content {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+.modal-image {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .search-bar input {
+    width: 80%;
+  }
+  .cards-container {
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 20px;
-    background-color: #e9ecef;
   }
-  
-  .dashboard-box {
-    background-color: #fff;
-    padding: 20px 30px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  .complaint-card {
     width: 100%;
-    max-width: 600px;
   }
-  
-  .dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .dashboard-header h2 {
-    margin: 0;
-  }
-  
-  .btn.btn-secondary {
-    background-color: #6c757d;
-    padding: 8px 16px;
-    border: none;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .btn.btn-secondary:hover {
-    background-color: #5a6268;
-  }
-  
-  .user-details {
-    margin-bottom: 20px;
-  }
-  
-  .complaint-form {
-    margin-top: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-input {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .btn {
-    display: block;
-    width: 100%;
-    padding: 10px 0;
-    background-color: #007BFF;
-    border: none;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .success-message {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    text-align: center;
-  }
-  
-  .error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    text-align: center;
-  }
-  
-  .user-complaints {
-    margin-top: 30px;
-  }
-  
-  .complaints-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .complaints-table th,
-  .complaints-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  .complaints-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-  }
-  
-  .reply-icon {
-    font-size: 20px;
-    margin-left: 5px;
-    cursor: pointer;
-  }
-  
+}

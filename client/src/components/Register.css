@@ -1,74 +1,244 @@
 /* src/components/Register.css */
+
+/* Import Google Font (same as login for consistency) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+:root {
+  --primary-color: #3c8ce7;
+  --secondary-color: #00EAFF;
+  --accent-color: #ffffff;
+  --bg-opacity: rgba(255, 255, 255, 0.25);
+  --text-color: #ffffff;
+  --font-family: 'Poppins', sans-serif;
+}
+
+/* 
+  Full-page container with an animated gradient background.
+  Positioned relative so the back button can be absolutely placed.
+*/
 .register-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  animation: waterWave 8s ease-in-out infinite alternate;
+  font-family: var(--font-family);
+}
+
+@keyframes waterWave {
+  0% {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  }
+  100% {
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  }
+}
+
+/* 
+  Back button in the top-left corner; no navigation action.
+*/
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 0.6em 1.2em;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  backdrop-filter: blur(3px);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.back-button:hover {
+  background-color: rgba(40, 191, 232, 0.4);
+  transform: scale(1.03);
+}
+
+/* 
+  The wrapper holds two columns: left image & right form.
+  A translucent background is applied to the entire wrapper.
+*/
+.register-wrapper {
+  display: flex;
+  width: 90%;
+  max-width: 1100px;
+  height: 92%;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* Left side with a water-themed image */
+.register-left {
+  flex: 1;
+  overflow: hidden;
+}
+.left-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.left-image:hover {
+  transform: scale(1.08);
+}
+
+/* Right side containing the register form */
+.register-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background-color: black;
+}
+
+/* Glass effect box for the form */
+.glass-effect {
+  background-color: var(--bg-opacity);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* The actual register box with the form inside */
+.register-box {
+  width: 100%;
+  max-width: 400px;
+  color: #8bdef3;
+  padding: 20px;
+  border-radius: 12px;
+}
+.register-box.glass-effect{
+  background-color: #bef0f5;
+}
+.register-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color:#061526;
+}
+
+/* Form group & input styling */
+.form-group {
+  margin-bottom: 15px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #39ace6;
+}
+.form-input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #0dbbc8;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+  font-family: var(--font-family);
+}
+.form-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+p{
+  color: #357ed4;
+}
+/* Button with neon glow & ripple effect */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color:cyan;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: var(--font-family);
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+.btn:hover {
+  background-color: #357ed4;
+  box-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+  transform: scale(1.02);
+}
+
+
+/* Ripple effect on click */
+.ripple-btn:active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  animation: ripple 0.6s ease-out;
+}
+@keyframes ripple {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Error message styling */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Success message styling */
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Link styling */
+.link {
+  color: var(--primary-color);
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+.link:hover {
+  text-decoration: underline;
+  color: var(--secondary-color);
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .register-wrapper {
+    flex-direction: column;
+    height: auto;
+    margin: 20px 0;
+  }
+  .register-left {
+    width: 100%;
+    height: 220px;
+  }
+  .register-right {
+    width: 100%;
     padding: 20px;
   }
-  
-  .register-box {
-    background-color: #fff;
-    padding: 20px 30px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .register-box h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-input {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .btn {
-    display: block;
-    width: 100%;
-    padding: 10px 0;
-    background-color: #28a745;
-    border: none;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .btn:hover {
-    background-color: #218838;
-  }
-  
-  .error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    text-align: center;
-  }
-  
-  .success-message {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    text-align: center;
-  }
-  
-  .link {
-    color: #28a745;
-  }
-  .link:hover {
-    text-decoration: underline;
-  }
-  
+}

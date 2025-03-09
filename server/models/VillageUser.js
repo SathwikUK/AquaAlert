@@ -1,4 +1,4 @@
-// backend/models/User.js
+// backend/models/User.js (or VillageUser.js if you prefer)
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import './Login.css';
+import csp2 from "../assets/csp2.jpg";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -11,8 +12,9 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,38 +29,56 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <div className="login-box">
-        <h2>Login</h2>
-        {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email:</label>
-            <input
-              type="email"
-              name="email"
-              className="form-input"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+      {/* Back button (no navigation) */}
+      <button className="back-button" >Back</button>
+
+      <div className="login-wrapper">
+        <div className="login-left">
+          <img
+            src={csp2}
+            alt="Water Theme"
+            className="left-image"
+          />
+        </div>
+        <div className="login-right">
+          <div className="login-box glass-effect">
+            <h2>Login</h2>
+            {error && <div className="error-message">{error}</div>}
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Email:</label>
+                <input
+                  type="email"
+                  name="email"
+                  className="form-input"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  placeholder="Enter your email"
+                />
+              </div>
+              <div className="form-group">
+                <label>Password:</label>
+                <input
+                  type="password"
+                  name="password"
+                  className="form-input"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  placeholder="Enter your password"
+                />
+              </div>
+              <button type="submit" className="btn ripple-btn">
+                Login
+              </button>
+            </form>
+            <p>
+              Don't have an account?{' '}
+              <Link to="/register" className="link">Register here</Link>
+            </p>
           </div>
-          <div className="form-group">
-            <label>Password:</label>
-            <input
-              type="password"
-              name="password"
-              className="form-input"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <button type="submit" className="btn">Login</button>
-        </form>
-        <p>
-          Don't have an account?{' '}
-          <Link to="/register" className="link">Register here</Link>
-        </p>
+        </div>
       </div>
     </div>
   );
