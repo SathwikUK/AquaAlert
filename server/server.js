@@ -20,6 +20,11 @@ const io = socketIo(server, {
 app.use(express.json());
 app.use(cors());
 
+// Default route
+app.get('/', (req, res) => {
+  res.send('Welcome to the API');
+});
+
 // Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
